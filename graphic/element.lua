@@ -1,3 +1,4 @@
+--- A class for all elements.
 Element = {
     left = 0,
     top = 0,
@@ -7,13 +8,14 @@ Element = {
     bottom = 0,
 }
 
----@param left? any 0 ~ ? or nil
----@param top? any 0 ~ ? or nil
----@param width? any 0 ~ ? or nil
----@param height? any 0 ~ ? or nil
----@param right? any 0 ~ ? or nil
----@param bottom? any 0 ~ ? or nil
----@return table Element
+--- Generates the element class and returns it.
+--- @param left? number distance from left
+--- @param top? number distance from top 
+--- @param width? number width of element
+--- @param height? number width of element
+--- @param right? number distance from right
+--- @param bottom? number distance from bottom
+--- @return table Element
 function Element:new(left, top, width, height, right, bottom)
     if left ~= nil and top ~= nil then
         if width ~= nil and height ~= nil then -- left, top, width, height nil, nil
@@ -41,6 +43,30 @@ function Element:new(left, top, width, height, right, bottom)
 
     setmetatable(element, self)
     self.__index = self
-
     return element
+end
+
+
+--- The element class with color.
+ColoredElement = {
+    color = DEFAULT_COLORS.PINK,
+}
+setmetatable(ColoredElement, Element)
+
+--- Generates the element class with color and returns it.
+--- @param left? number distance from left
+--- @param top? number distance from top 
+--- @param width? number width of element
+--- @param height? number width of element
+--- @param right? number distance from right
+--- @param bottom? number distance from bottom
+--- @param color? table
+--- @return table Element
+function ColoredElement:new(left, top, width, height, right, bottom, color)
+    local coloredElement = Element:new(left, top, width, height, right, bottom)
+    coloredElement.color = color
+
+    setmetatable(coloredElement, self)
+    self.__index = self
+    return coloredElement
 end

@@ -4,6 +4,7 @@ local DIR_PATH = SCRIPT_PATH:match("(.*\\)")
 -- Loading modules.
 local MODULES = {
     "graphic\\color.lua",
+    "graphic\\scheme.lua",
     "graphic\\element.lua",
 }
 for i = 1, #MODULES do
