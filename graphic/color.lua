@@ -12,19 +12,6 @@ local function convert_hex_to_decimal(hex_string)
     return tonumber(hex_string, 16)
 end
 
---- @class Color
---- @field red? number 0.0 ~ 1.0
---- @field green? number 0.0 ~ 1.0
---- @field blue? number 0.0 ~ 1.0
---- @field alpha? number 0.0 ~ 1.0
---- A class for easily specifying D2D color.
-Color = {
-    red = 0.0,
-    green = 0.0,
-    blue = 0.0,
-    alpha = 0.0,
-}
-
 --- Converts the hex triplet to the table for generating color class.
 --- @param color_code? string hex triplet (#00000000 ~ #FFFFFFFF)
 --- @return table<string, number> color_with_decimal
@@ -54,6 +41,19 @@ local function convert_hex_triplet_to_decimal(color_code)
     return color
 end
 
+--- A class for easily specifying D2D color.
+--- @class Color
+--- @field red number 0.0 ~ 1.0
+--- @field green number 0.0 ~ 1.0
+--- @field blue number 0.0 ~ 1.0
+--- @field alpha number 0.0 ~ 1.0
+Color = {
+    red = 0.0,
+    green = 0.0,
+    blue = 0.0,
+    alpha = 1.0,
+}
+
 --- Generates the color class and returns it.
 --- @param color_code? string hex triplet (#00000000 ~ #FFFFFFFF)
 --- @param red? number 0 ~ 255
@@ -67,8 +67,8 @@ function Color:new(color_code, red, green, blue, alpha)
     color.red = convert_char_to_d2d(red)
     color.green = convert_char_to_d2d(green)
     color.blue = convert_char_to_d2d(blue)
-    color.alpha = alpha or 0.0
+    color.alpha = alpha or Color.alpha
 
-    setmetatable(color, {__index = Color})
-    return self
+    setmetatable(color, {__index = self})
+    return color
 end
