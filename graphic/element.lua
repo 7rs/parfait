@@ -1,3 +1,10 @@
+--- @class Element
+--- @field left? integer
+--- @field top? integer
+--- @field width? integer
+--- @field height? integer
+--- @field right? integer
+--- @field bottom? integer
 --- A class for all elements.
 Element = {
     left = 0,
@@ -9,13 +16,13 @@ Element = {
 }
 
 --- Generates the element class and returns it.
---- @param left? number distance from left
---- @param top? number distance from top 
---- @param width? number width of element
---- @param height? number width of element
---- @param right? number distance from right
---- @param bottom? number distance from bottom
---- @return table Element
+--- @param left? integer distance from left
+--- @param top? integer distance from top 
+--- @param width? integer width of element
+--- @param height? integer width of element
+--- @param right? integer distance from right
+--- @param bottom? integer distance from bottom
+--- @return Element
 function Element:new(left, top, width, height, right, bottom)
     if left ~= nil and top ~= nil then
         if width ~= nil and height ~= nil then -- left, top, width, height nil, nil
@@ -46,12 +53,12 @@ function Element:new(left, top, width, height, right, bottom)
     return element
 end
 
-
+--- @class ColoredElement: Element
+--- @field color? Color
 --- The element class with color.
 ColoredElement = {
     color = DEFAULT_COLORS.PINK,
 }
-setmetatable(ColoredElement, Element)
 
 --- Generates the element class with color and returns it.
 --- @param left? number distance from left
@@ -60,13 +67,12 @@ setmetatable(ColoredElement, Element)
 --- @param height? number width of element
 --- @param right? number distance from right
 --- @param bottom? number distance from bottom
---- @param color? table
---- @return table Element
+--- @param color? Color
+--- @return Element
 function ColoredElement:new(left, top, width, height, right, bottom, color)
-    local coloredElement = Element:new(left, top, width, height, right, bottom)
-    coloredElement.color = color
+    local colored_element = Element:new(left, top, width, height, right, bottom)
+    self.color = color
 
-    setmetatable(coloredElement, self)
-    self.__index = self
-    return coloredElement
+    setmetatable(colored_element, {__index = ColoredElement})
+    return self
 end
