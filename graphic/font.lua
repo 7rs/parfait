@@ -30,7 +30,7 @@ FONT_SIZES = {
 
 --- @enum FontFamilies
 FONT_FAMILIES = {
-    -- TODO: Need to add some fonts.
+    --- @todo Need to add some fonts.
     SEGOE_UI = "Segoe UI",
     CONSOLAS = "Consolas",
     YU_GOTHIC = "Yu Gothic",
@@ -78,8 +78,8 @@ Font = {
 --- @param fontFamily? FontFamilies
 --- @param weight? FontWeights
 --- @return Font
-function Font:new(style, color, align, verticalAlign, size, fontFamily, weight)
-    local font = {
+function Font.new(style, color, align, verticalAlign, size, fontFamily, weight)
+    local self = {
         color = color or Font.color,
         align = align or Font.align,
         verticalAlign = verticalAlign or Font.verticalAlign,
@@ -89,9 +89,9 @@ function Font:new(style, color, align, verticalAlign, size, fontFamily, weight)
     }
 
     if style == FONT_STYLES.BOLD then
-        font.weight = FONT_WEIGHTS.BOLD
+        self.weight = FONT_WEIGHTS.BOLD
     end
 
-    setmetatable(font, { __index = self })
-    return font
+    setmetatable(self, { __index = Font })
+    return self
 end

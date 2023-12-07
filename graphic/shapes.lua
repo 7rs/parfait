@@ -1,4 +1,5 @@
 --- @class Rectangle: ColoredElement
+--- @field color? Color
 Rectangle = {
     color = DEFAULT_COLORS.BLACK,
 }
@@ -38,6 +39,7 @@ function Rectangle:draw(thickness)
 end
 
 --- @class Ellipse: ColoredElement
+--- @field color? Color
 Ellipse = {
     color = DEFAULT_COLORS.WHITE,
 }
@@ -76,6 +78,7 @@ function Ellipse:draw(thickness)
 end
 
 --- @class Line: ColoredElement
+--- @field color? Color
 Line = {
     color = DEFAULT_COLORS.YELLOW
 }
