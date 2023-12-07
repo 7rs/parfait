@@ -43,6 +43,7 @@
 [lua-style-guide]: https://github.com/luarocks/lua-style-guide
 [lua-style-guide-jp]: https://github.com/verve-inc/CodingStyleGuides/blob/master/Guides/Lua.md
 [wiki]: https://github.com/7rs/parfait/wiki/StyleGuide
+[mupen-lua-doc]: https://wade7wastaken.github.io/MupenLuaDoc/
 
 ## Contributing  
   Subroutine as much as possible and please write documentations.
@@ -52,6 +53,7 @@
   - [LDoc Annotations][ldoc-wiki]
   - [Style Guide (English)][lua-style-guide]
   - [Style Guide (Japanese)][lua-style-guide-jp]
+  - [mupen64-rr-lua docs][mupen-lua-doc]
 
 
 ## License  
