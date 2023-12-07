@@ -78,7 +78,7 @@ Element = {
 --- @param right? integer distance from right
 --- @param bottom? integer distance from bottom
 --- @return Element
-function Element:new(left, top, width, height, right, bottom)
+function Element.new(left, top, width, height, right, bottom)
     validate_element_fields(left, top, width, height, right, bottom)
 
     if left and top then
@@ -94,7 +94,7 @@ function Element:new(left, top, width, height, right, bottom)
         top = bottom - height
     end
 
-    local element = {
+    local self = {
         left = left or 0,
         top = top or 0,
         width = width or 0,
@@ -103,30 +103,31 @@ function Element:new(left, top, width, height, right, bottom)
         bottom = bottom or 0,
     }
 
-    setmetatable(element, {__index = self})
-    return element
+    setmetatable(self, {__index = Element})
+    return self
 end
 
+--- The element class with color.
 --- @class ColoredElement: Element
 --- @field color? Color
---- The element class with color.
 ColoredElement = {
     color = DEFAULT_COLORS.PINK,
 }
 
 --- Generates the element class with color and returns it.
+--- @param color? Color
 --- @param left? number distance from left
 --- @param top? number distance from top 
 --- @param width? number width of element
 --- @param height? number width of element
 --- @param right? number distance from right
 --- @param bottom? number distance from bottom
---- @param color? Color
---- @return Element
-function ColoredElement:new(left, top, width, height, right, bottom, color)
-    local colored_element = Element:new(left, top, width, height, right, bottom)
+--- @return ColoredElement
+function ColoredElement.new(color, left, top, width, height, right, bottom)
+    --- @type any
+    local self = Element.new(left, top, width, height, right, bottom)
     self.color = color
 
-    setmetatable(colored_element, {__index = self})
-    return colored_element
+    setmetatable(self, {__index = ColoredElement})
+    return self
 end

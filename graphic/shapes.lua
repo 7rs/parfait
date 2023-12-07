@@ -1,9 +1,25 @@
+--- @class Rectangle: ColoredElement
 Rectangle = {
     color = DEFAULT_COLORS.BLACK,
 }
-setmetatable(Rectangle, { __index = ColoredElement })
 
---- Fill the specified area with the specified color
+--- @param color? Color
+--- @param left? number distance from left
+--- @param top? number distance from top 
+--- @param width? number width of element
+--- @param height? number width of element
+--- @param right? number distance from right
+--- @param bottom? number distance from bottom
+--- @return Rectangle
+function Rectangle.new(color, left, top, width, height, right, bottom)
+    --- @type any
+    local self = ColoredElement.new(color, left, top, width, height, right, bottom)
+    setmetatable(self, {__index = Rectangle})
+    return self
+end
+
+
+--- Fill the specified area with the specified color.
 function Rectangle:fill()
     wgui.fill_rectangle(
         self.left, self.top, self.right, self.bottom,
@@ -11,8 +27,8 @@ function Rectangle:fill()
     )
 end
 
---- Draws a specified rectangle of a specified size
----@param thickness number
+--- Draws a specified rectangle of a specified size.
+---@param thickness integer
 function Rectangle:draw(thickness)
     wgui.draw_rectangle(
         self.left, self.top, self.right, self.bottom,
@@ -21,12 +37,27 @@ function Rectangle:draw(thickness)
     )
 end
 
+--- @class Ellipse: ColoredElement
 Ellipse = {
     color = DEFAULT_COLORS.WHITE,
 }
-setmetatable(Ellipse, { __index = ColoredElement })
 
---- Fill a ellipse of a specified radius at a specified position in a specified color
+--- @param color? Color
+--- @param left? number distance from left
+--- @param top? number distance from top 
+--- @param width? number width of element
+--- @param height? number width of element
+--- @param right? number distance from right
+--- @param bottom? number distance from bottom
+--- @return Ellipse
+function Ellipse.new(color, left, top, width, height, right, bottom)
+    --- @type any
+    local self = ColoredElement.new(color, left, top, width, height, right, bottom)
+    setmetatable(self, {__index = Ellipse})
+    return self
+end
+
+--- Fill a ellipse of a specified radius at a specified position in a specified color.
 function Ellipse:fill()
     wgui.fill_ellipse(
         self.left, self.top, self.width // 2, self.height // 2,
@@ -34,8 +65,8 @@ function Ellipse:fill()
     )
 end
 
---- Draws a ellipse of a specified radius at a specified position in a specified color
----@param thickness number
+--- Draws a ellipse of a specified radius at a specified position in a specified color.
+---@param thickness integer
 function Ellipse:draw(thickness)
     wgui.draw_ellipse(
         self.left, self.top, self.width // 2, self.height // 2,
@@ -44,12 +75,27 @@ function Ellipse:draw(thickness)
     )
 end
 
+--- @class Line: ColoredElement
 Line = {
     color = DEFAULT_COLORS.YELLOW
 }
-setmetatable(Line, { __index = ColoredElement })
 
----@param thickness number
+--- @param color? Color
+--- @param left? number distance from left
+--- @param top? number distance from top 
+--- @param width? number width of element
+--- @param height? number width of element
+--- @param right? number distance from right
+--- @param bottom? number distance from bottom
+--- @return Line
+function Line.new(color, left, top, width, height, right, bottom)
+    --- @type any
+    local self = ColoredElement.new(color, left, top, width, height, right, bottom)
+    setmetatable(self, {__index = Line})
+    return self
+end
+
+---@param thickness integer
 function Line:draw(thickness)
     wgui.draw_line(
         self.left, self.top, self.right, self.bottom,

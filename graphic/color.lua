@@ -61,14 +61,14 @@ Color = {
 --- @param blue? number 0 ~ 255
 --- @param alpha? number 0.0 ~ 1.0
 --- @return Color
-function Color:new(color_code, red, green, blue, alpha)
-    local color = convert_hex_triplet_to_decimal(color_code)
+function Color.new(color_code, red, green, blue, alpha)
+    --- @type any
+    local self = convert_hex_triplet_to_decimal(color_code)
+    self.red = convert_char_to_d2d(self.red or red)
+    self.green = convert_char_to_d2d(self.green or green)
+    self.blue = convert_char_to_d2d(self.blue or blue)
+    self.alpha = alpha or Color.alpha
 
-    color.red = convert_char_to_d2d(red)
-    color.green = convert_char_to_d2d(green)
-    color.blue = convert_char_to_d2d(blue)
-    color.alpha = alpha or Color.alpha
-
-    setmetatable(color, {__index = self})
-    return color
+    setmetatable(self, {__index = Color})
+    return self
 end
