@@ -1,2 +1,10 @@
 *.ghost
 *.vscode/
+
+wiki/*
+inputDirection_dev*
+new/*
+res/*
+script/*
+mupen-lua-ugui.lua
+nineslice.lua
