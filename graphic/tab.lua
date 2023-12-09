@@ -1,107 +1,62 @@
---- @enum ExpandWidths
-EXPAND_WIDTHS = {
-    -- 4:3            1024×768 XGA (eXtended Graphics Array)
-    -- 16:9           1280×720 HD
-    -- 683:384 (16:9) 1366×768 FWXGA (Full-WXGA)
-    XGA = {
-        EXPAND_WIDTH = 216,
-        WIDTH = 1024,
-        HEIGHT = 768,
-    },
+--- @module "tab"
+local tab = {}
 
-    -- 4:3  1440×1080 Hi-Vision / HDTV (High Definition television)
-    -- 16:9 1920×1080 FHD (Full-HD)
-    HDTV = {
-        EXPAND_WIDTH = 216,
-        WIDTH = 1440,
-        HEIGHT = 1080,
-    },
 
-    -- 4:3  2048×1536 QXGA (Quad-XGA)
-    -- 16:9	2560×1440 WQHD (Wide Quad-HD)
-    QXGA = {
-        EXPAND_WIDTH = 216,
-        WIDTH = 2048,
-        HEIGHT = 1440,
-    },
+local colorset = require("graphic.theme.colorset")
+local element = require("graphic.elements.element")
+local background = require("graphic.background")
 
-    -- 4:3  3200×2400 QUXGA (Quad UXGA)
-    -- 16:9 3840×2160 UHD (Ultra-HD)
-    QUXGA = {
-        EXPAND_WIDTH = 216,
-        WIDTH = 2400,
-        HEIGHT = 2160,
-    },
-}
 
 --- @class Tab
-Tab = {
-    expand_width = EXPAND_WIDTHS.XGA.EXPAND_WIDTH,
+--- @field theme? any
+--- @field background? Background
+--- @field elements? table<Element?>
+local Tab = {
+    colorset = colorset.PARFAIT,
+    background = nil,
+    elements = {},
 }
 
-local function resize()
-    local window = wgui.info()
+--- @param color_scheme? any
+--- @param left? number distance from left
+--- @param top? number distance from top
+--- @param width? number width of element
+--- @param height? number width of element
+--- @param right? number distance from right
+--- @param bottom? number distance from bottom
+--- @return Tab
+function tab.new(color_scheme, left, top, width, height, right, bottom)
+    --- @type any
+    local self = element.new(left, top, width, height, right, bottom)
 
-    if window.width == EXPAND_WIDTHS.XGA.WIDTH then
-        wgui.resize(
-            EXPAND_WIDTHS.XGA.WIDTH + EXPAND_WIDTHS.XGA.EXPAND_WIDTH,
-            EXPAND_WIDTHS.XGA.HEIGHT
-        )
-    elseif window.width == EXPAND_WIDTHS.HDTV.WIDTH then
-        wgui.resize(
-            EXPAND_WIDTHS.HDTV.WIDTH + EXPAND_WIDTHS.HDTV.EXPAND_WIDTH,
-            EXPAND_WIDTHS.HDTV.HEIGHT
-        )
-    elseif window.width == EXPAND_WIDTHS.QXGA.WIDTH then
-        wgui.resize(
-            EXPAND_WIDTHS.QXGA.WIDTH + EXPAND_WIDTHS.QXGA.EXPAND_WIDTH,
-            EXPAND_WIDTHS.QXGA.HEIGHT
-        )
-    elseif window.width == EXPAND_WIDTHS.QUXGA.WIDTH then
-        wgui.resize(
-            EXPAND_WIDTHS.QUXGA.WIDTH + EXPAND_WIDTHS.QUXGA.EXPAND_WIDTH,
-            EXPAND_WIDTHS.QUXGA.HEIGHT
-        )
-    else
-        if window.width == EXPAND_WIDTHS.XGA.WIDTH + EXPAND_WIDTHS.XGA.EXPAND_WIDTH then
-            wgui.resize(
-                EXPAND_WIDTHS.XGA.WIDTH,
-                EXPAND_WIDTHS.XGA.HEIGHT
-            )
-        elseif window.width == EXPAND_WIDTHS.HDTV.WIDTH + EXPAND_WIDTHS.XGA.EXPAND_WIDTH then
-            wgui.resize(
-                EXPAND_WIDTHS.HDTV.WIDTH,
-                EXPAND_WIDTHS.HDTV.HEIGHT
-            )
-        elseif window.width == EXPAND_WIDTHS.QXGA.WIDTH + EXPAND_WIDTHS.XGA.EXPAND_WIDTH then
-            wgui.resize(
-                EXPAND_WIDTHS.QXGA.WIDTH,
-                EXPAND_WIDTHS.QXGA.HEIGHT
-            )
-        elseif window.width == EXPAND_WIDTHS.QUXGA.WIDTH + EXPAND_WIDTHS.XGA.EXPAND_WIDTH then
-            wgui.resize(
-                EXPAND_WIDTHS.QUXGA.WIDTH,
-                EXPAND_WIDTHS.QUXGA.HEIGHT
-            )
-        end
-    end
+    self.colorset = color_scheme or Tab.colorset
+    self.background = background.new(self.colorset.BLACK, nil, self.left, self.top, self.width, self.height)
+
+    setmetatable(self, { __index = Tab })
+    return self
 end
 
----@param color? table
-function Tab.new(color)
-    -- local window = wgui.info()
+function Tab:add_element(element)
+    table.insert(self.elements, element)
+end
 
-    -- if window.width <= 1024 then
-    --     Window.width = window.width
-    --     Window.height = window.height
-    --     wgui.resize(window.width + Page.expandWidth, window.height)
+function Tab:delete_element(index)
+    table.remove(self.elements, index)
+end
+
+function Tab:get_element(index)
+    self.elements(index or 1)
+end
+
+function Tab:get_elements()
+    return self.elements
+end
+
+function Tab:draw()
+    self.background:draw()
+    -- for element in self.elements do
+    --     element:draw()
     -- end
-
-    -- local page = Rectangle:new(
-    --     Window.width, 0, Window.width + Page.expandWidth, Window.height,
-    --     nil, nil, color or self.color
-    -- )
-
-    -- setmetatable(page, { __index = self })
-    -- return page
 end
+
+return tab

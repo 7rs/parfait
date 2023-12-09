@@ -8,34 +8,42 @@
 ---     https://github.com/mkdasher/SM64Lua
 ---
 
+local function add_lua_path(path)
+    package.path = package.path .. string.format(";%s?.lua", path)
+    package.cpath = package.cpath .. string.format(";%s?.dll", path)
+    package.cpath = package.cpath .. string.format(";%s?.?dll", path)
 
--- Gets current directory path.
+    print(string.format("Add the path (%s) to package.path and package.cpath", path))
+end
+
+local function get_mupen_version()
+    if emu.set_renderer then
+        return "1.1.4+"
+    elseif wgui.fill_rectangle then
+        return "1.1.3"
+    else
+        return "1.1.2?"
+    end
+end
+
 local SCRIPT_PATH = debug.getinfo(1, "S").short_src
 local DIR_PATH = SCRIPT_PATH:match("(.*\\)")
 
---- Returns full path for current path.
---- @param subdir string
---- @param module_names table<string>
---- @return table<string>
-local function get_module_paths(subdir, module_names)
-    for i = 1, #module_names do
-        module_names[i] = DIR_PATH .. subdir .. "\\" .. module_names[i]
-    end
+add_lua_path(DIR_PATH)
 
-    return module_names
-end
+print("Parfait (https://github.com/7rs/parfait)")
+print(string.format("Lua Version: %s", _VERSION))
+print(string.format("Mupen Version: %s", get_mupen_version()))
+print()
 
--- Loading modules.
-local mods = get_module_paths("graphic", {
-    "color.lua",
-    "color_scheme.lua",
-    "font.lua",
-    "font_set.lua",
-    "element.lua",
-    "shapes.lua",
-    "text.lua",
-    "tab.lua"
-})
-for i = 1, #mods do
-    dofile(mods[i])
-end
+local colorset = require("graphic.theme.colorset")
+local display = require("graphic.display")
+local tab = require("graphic.tab")
+
+local display_info = display.resize_window()
+Main = tab.new(colorset.DRACULA, display_info.width, 0, display_info.expand, display_info.height)
+
+emu.atupdatescreen(function()
+    Main:draw()
+end)
+emu.atstop(function() display.resize_window(true) end)

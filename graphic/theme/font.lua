@@ -1,13 +1,20 @@
+--- @module "font"
+local font = {}
+
+
+local colorset = require("graphic.theme.colorset")
+
+
 --- @enum FontStyles
 --- Oblique wasn't supported.
-FONT_STYLES = {
+font.STYLES = {
     NORMAL = 0,
     BOLD = 1,
     ITALIC = 2,
 }
 
 --- @enum FontAligns
-FONT_ALIGNS = {
+font.HORIZONTAL_ALIGNS = {
     START = 0,
     END = 1,
     CENTER = 2,
@@ -15,21 +22,21 @@ FONT_ALIGNS = {
 }
 
 --- @enum FontVerticalAligns
-FONT_VERTIACAL_ALIGNS = {
+font.VERTIACAL_ALIGNS = {
     START = 0,
     END = 1,
     CENTER = 2,
 }
 
 --- @enum FontSizes
-FONT_SIZES = {
+font.SIZES = {
     SMALL = 10,
     MEDIUM = 14,
     LARGE = 18,
 }
 
 --- @enum FontFamilies
-FONT_FAMILIES = {
+font.FAMILIES = {
     --- @todo Need to add some fonts.
     SEGOE_UI = "Segoe UI",
     CONSOLAS = "Consolas",
@@ -38,7 +45,7 @@ FONT_FAMILIES = {
 }
 
 --- @enum FontWeights
-FONT_WEIGHTS = {
+font.WEIGHTS = {
     THIN = 100,
     EXTRA_LIGHT = 200,
     LIGHT = 300,
@@ -53,32 +60,32 @@ FONT_WEIGHTS = {
 --- A class for text elements.
 --- @class Font
 --- @field style? FontStyles
---- @field color? Color
+--- @field color? D2DColor
 --- @field align? FontAligns
 --- @field verticalAlign? FontVerticalAligns
 --- @field size? FontSizes
 --- @field family? FontFamilies
 --- @field weight? FontWeights
-Font = {
-    style = FONT_STYLES.NORMAL,
-    color = DEFAULT_COLORS.WHITE,
-    align = FONT_ALIGNS.START,
-    verticalAlign = FONT_VERTIACAL_ALIGNS.START,
-    size = FONT_SIZES.MEDIUM,
-    family = FONT_FAMILIES.SEGOE_UI,
-    weight = FONT_WEIGHTS.NORMAL,
+local Font = {
+    style = font.STYLES.NORMAL,
+    color = colorset.PARFAIT.WHITE,
+    align = font.ALIGNS.START,
+    verticalAlign = font.VERTIACAL_ALIGNS.START,
+    size = font.SIZES.MEDIUM,
+    family = font.FAMILIES.SEGOE_UI,
+    weight = font.WEIGHTS.NORMAL,
 }
 
 --- Generates the font class and returns it.
 --- @param style? FontStyles
---- @param color? Color
+--- @param color? D2DColor
 --- @param align? FontAligns
 --- @param verticalAlign? FontVerticalAligns
 --- @param size? FontSizes
 --- @param fontFamily? FontFamilies
 --- @param weight? FontWeights
 --- @return Font
-function Font.new(style, color, align, verticalAlign, size, fontFamily, weight)
+function font.new(style, color, align, verticalAlign, size, fontFamily, weight)
     local self = {
         color = color or Font.color,
         align = align or Font.align,
@@ -88,10 +95,12 @@ function Font.new(style, color, align, verticalAlign, size, fontFamily, weight)
         weight = weight or Font.weight,
     }
 
-    if style == FONT_STYLES.BOLD then
-        self.weight = FONT_WEIGHTS.BOLD
+    if style == font.STYLES.BOLD then
+        self.weight = font.WEIGHTS.BOLD
     end
 
     setmetatable(self, { __index = Font })
     return self
 end
+
+return font

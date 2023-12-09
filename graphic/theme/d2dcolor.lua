@@ -1,3 +1,7 @@
+--- @module "d2dcolor"
+local d2dcolor = {}
+
+
 --- Converts the 8bit integer to a float.
 --- @param char? integer 0 ~ 255
 --- @return number D2DColor 0.0 ~ 1.0
@@ -20,7 +24,7 @@ local function convert_hex_triplet_to_decimal(color_code)
         return {}
     end
 
-    --- @type table<string, number> 
+    --- @type table<string, number>
     local color = {}
 
     if color_code:sub(1, 1) == "#" then
@@ -42,12 +46,12 @@ local function convert_hex_triplet_to_decimal(color_code)
 end
 
 --- A class for easily specifying D2D color.
---- @class Color
+--- @class D2DColor
 --- @field red number 0.0 ~ 1.0
 --- @field green number 0.0 ~ 1.0
 --- @field blue number 0.0 ~ 1.0
 --- @field alpha number 0.0 ~ 1.0
-Color = {
+local D2DColor = {
     red = 0.0,
     green = 0.0,
     blue = 0.0,
@@ -60,15 +64,31 @@ Color = {
 --- @param green? number 0 ~ 255
 --- @param blue? number 0 ~ 255
 --- @param alpha? number 0.0 ~ 1.0
---- @return Color
-function Color.new(color_code, red, green, blue, alpha)
+--- @return D2DColor
+function d2dcolor.new(color_code, red, green, blue, alpha)
     --- @type any
     local self = convert_hex_triplet_to_decimal(color_code)
     self.red = convert_char_to_d2d(self.red or red)
     self.green = convert_char_to_d2d(self.green or green)
     self.blue = convert_char_to_d2d(self.blue or blue)
-    self.alpha = alpha or Color.alpha
+    self.alpha = alpha or D2DColor.alpha
 
-    setmetatable(self, {__index = Color})
+    setmetatable(self, { __index = D2DColor })
     return self
 end
+
+--- @param color D2DColor
+--- @return boolean
+function d2dcolor.is_black(color)
+    if color.red ~= 0 then
+        return false
+    elseif color.green ~= 0 then
+        return false
+    elseif color.blue ~= 0 then
+        return false
+    end
+
+    return true
+end
+
+return d2dcolor

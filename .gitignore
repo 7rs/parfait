@@ -1,7 +1,7 @@
 *.ghost
 *.vscode/
 
-wiki/*
+wiki
 inputDirection_dev*
 new/*
 res/*

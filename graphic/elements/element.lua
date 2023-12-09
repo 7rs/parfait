@@ -1,11 +1,15 @@
---- Checks fields for Element.  
---- Available argument combinations are:  
----     - left, top, width, height  
----     - left, top, right, bottom  
----     - right, bottom, width, height  
---- Also, negative values for position aren't allowed.  
+--- @module "element"
+local element = {}
+
+
+--- Checks fields for Element.
+--- Available argument combinations are:
+---     - left, top, width, height
+---     - left, top, right, bottom
+---     - right, bottom, width, height
+--- Also, negative values for position aren't allowed.
 --- @param left? integer distance from left
---- @param top? integer distance from top 
+--- @param top? integer distance from top
 --- @param width? integer width of element
 --- @param height? integer width of element
 --- @param right? integer distance from right
@@ -45,7 +49,7 @@ local function validate_element_fields(left, top, width, height, right, bottom)
             assert(left + width == right, incorrect_value_error_message)
         end
     end
-    if  height and bottom then
+    if height and bottom then
         assert(bottom - height >= 0, incorrect_value_error_message)
         if top then
             assert(top + height == bottom, incorrect_value_error_message)
@@ -61,7 +65,7 @@ end
 --- @field height integer
 --- @field right integer
 --- @field bottom integer
-Element = {
+local Element = {
     left = 0,
     top = 0,
     width = 0,
@@ -72,13 +76,13 @@ Element = {
 
 --- Generates the element class and returns it.
 --- @param left? integer distance from left
---- @param top? integer distance from top 
+--- @param top? integer distance from top
 --- @param width? integer width of element
 --- @param height? integer width of element
 --- @param right? integer distance from right
 --- @param bottom? integer distance from bottom
 --- @return Element
-function Element.new(left, top, width, height, right, bottom)
+function element.new(left, top, width, height, right, bottom)
     validate_element_fields(left, top, width, height, right, bottom)
 
     if left and top then
@@ -103,31 +107,8 @@ function Element.new(left, top, width, height, right, bottom)
         bottom = bottom or 0,
     }
 
-    setmetatable(self, {__index = Element})
+    setmetatable(self, { __index = Element })
     return self
 end
 
---- The element class with color.
---- @class ColoredElement: Element
---- @field color? Color
-ColoredElement = {
-    color = DEFAULT_COLORS.PINK,
-}
-
---- Generates the element class with color and returns it.
---- @param color? Color
---- @param left? number distance from left
---- @param top? number distance from top 
---- @param width? number width of element
---- @param height? number width of element
---- @param right? number distance from right
---- @param bottom? number distance from bottom
---- @return ColoredElement
-function ColoredElement.new(color, left, top, width, height, right, bottom)
-    --- @type any
-    local self = Element.new(left, top, width, height, right, bottom)
-    self.color = color
-
-    setmetatable(self, {__index = ColoredElement})
-    return self
-end
+return element
