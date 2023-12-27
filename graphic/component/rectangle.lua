@@ -3,7 +3,7 @@ local rectangle = {}
 
 
 local colorset = require("graphic.theme.colorset")
-local colored_element = require("graphic.elements.colored_element")
+local colored = require("graphic.elements.colored")
 
 
 --- @class Rectangle: ColoredElement
@@ -22,7 +22,7 @@ local Rectangle = {
 --- @return Rectangle
 function rectangle.new(color, left, top, width, height, right, bottom)
     --- @type any
-    local self = colored_element.new(color, left, top, width, height, right, bottom)
+    local self = colored.new(color, left, top, width, height, right, bottom)
     setmetatable(self, { __index = Rectangle })
     return self
 end

@@ -3,7 +3,7 @@ local ellipse = {}
 
 
 local colorset = require("graphic.theme.colorset")
-local colored_element = require("graphic.elements.colored_element")
+local colored = require("graphic.elements.colored")
 
 
 --- @class Ellipse: ColoredElement
@@ -22,7 +22,7 @@ local Ellipse = {
 --- @return Ellipse
 function ellipse.new(color, left, top, width, height, right, bottom)
     --- @type any
-    local self = colored_element.new(color, left, top, width, height, right, bottom)
+    local self = colored.new(color, left, top, width, height, right, bottom)
     setmetatable(self, { __index = Ellipse })
     return self
 end

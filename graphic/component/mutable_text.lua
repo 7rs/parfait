@@ -1,15 +1,16 @@
---- @module "text"
-local text = {}
+--- @module "mutable_text"
+local mutable_text = {}
 
-
-local d2dcolor = require("graphic.theme.d2dcolor")
+local text = require("graphic.elements.text")
 local colorset = require("graphic.theme.colorset")
-local colored_element = require("graphic.elements.colored_element")
+local fontset = require("graphic.theme.fontset")
 
-
---- @class Text: ColoredElement
-local Text = {
-    font = colorset.PARFAIT.NORMAL,
+--- @class MutableText: Text
+--- @field text? string
+--- @field func? function
+local MutableText = {
+    text = "This is a test.",
+    func = nil,
 }
 
 --- @param color? D2DColor
@@ -21,28 +22,30 @@ local Text = {
 --- @param bottom? number distance from bottom
 --- @param font? Font
 --- @return Text
-function text.new(color, left, top, width, height, right, bottom, font)
+function mutable_text.new(color, left, top, width, height, right, bottom, font, func)
     --- @type any
-    local self = colored_element.new(color, left, top, width, height, right, bottom)
-    self.font = font or Text.font
+    local self = text.new(color, left, top, width, height, right, bottom)
+    self.func = func
 
-    setmetatable(self, { __index = Text })
+    setmetatable(self, { __index = MutableText })
     return self
 end
 
---- @param text string
+
 --- @return { width: integer, height: integer }
-function Text:draw(text)
+function MutableText:draw()
+    local mutable_text = self.func() or self.text
+
     wgui.draw_text(
         self.left, self.top, self.right, self.bottom,
         self.color.red, self.color.green, self.color.blue, self.color.alpha,
-        text,
+        mutable_text,
         self.font.family, self.font.size, self.font.weight, self.font.style,
         self.font.align, self.font.verticalAlign,
         0 -- idk
     )
 
-    return wgui.get_text_size(text, self.font.family, self.font.size, self.width, self.height)
+    return wgui.get_text_size(mutable_text, self.font.family, self.font.size, self.width, self.height)
 end
 
-return text
+return mutable_text

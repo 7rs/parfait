@@ -2,7 +2,7 @@
 local font = {}
 
 
-local colorset = require("graphic.theme.colorset")
+local colorset = require("graphic.style.colorset")
 
 
 --- @enum FontStyles
@@ -33,11 +33,11 @@ font.SIZES = {
     SMALL = 10,
     MEDIUM = 14,
     LARGE = 18,
+    HEADER = 24,
 }
 
 --- @enum FontFamilies
 font.FAMILIES = {
-    --- @todo Need to add some fonts.
     SEGOE_UI = "Segoe UI",
     CONSOLAS = "Consolas",
     YU_GOTHIC = "Yu Gothic",
@@ -57,7 +57,7 @@ font.WEIGHTS = {
     BLACK = 900,
 }
 
---- A class for text elements.
+--- This is a class for some text components.
 --- @class Font
 --- @field style? FontStyles
 --- @field color? D2DColor
@@ -69,14 +69,14 @@ font.WEIGHTS = {
 local Font = {
     style = font.STYLES.NORMAL,
     color = colorset.PARFAIT.WHITE,
-    align = font.ALIGNS.START,
+    align = font.HORIZONTAL_ALIGNS.START,
     verticalAlign = font.VERTIACAL_ALIGNS.START,
     size = font.SIZES.MEDIUM,
     family = font.FAMILIES.SEGOE_UI,
     weight = font.WEIGHTS.NORMAL,
 }
 
---- Generates the font class and returns it.
+--- This function generates the font class and returns it.
 --- @param style? FontStyles
 --- @param color? D2DColor
 --- @param align? FontAligns

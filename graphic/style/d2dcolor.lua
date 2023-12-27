@@ -1,27 +1,49 @@
+--- This module simplifies the specification of colors in Direct2D.  <br/>
+--- more information:  <br/>
+---   https://learn.microsoft.com/en-us/windows/win32/learnwin32/using-color-in-direct2d  <br/>
+---   https://simple.wikipedia.org/wiki/RGB  <br/>
+---   https://simple.wikipedia.org/wiki/Web_color  <br/>
 --- @module "d2dcolor"
 local d2dcolor = {}
 
 
---- Converts the 8bit integer to a float.
---- @param char? integer 0 ~ 255
+--- This function converts an 8-bit integer to a float.
+--- @param i8? integer 0 ~ 255
 --- @return number D2DColor 0.0 ~ 1.0
-local function convert_char_to_d2d(char)
-    return char and (char / 255.0) or 0.0
+local function convert_char_to_d2d(i8)
+    return i8 and (i8 / 255.0) or 0.0
 end
 
---- Converts the hex string to a decimal.
+--- This function converts a hexadecimal string to a decimal integer.
 --- @param hex_string string 00 ~ FF
 --- @return integer decimal 0 ~ 255
 local function convert_hex_to_decimal(hex_string)
     return tonumber(hex_string, 16)
 end
 
---- Converts the hex triplet to the table for generating color class.
---- @param color_code? string hex triplet (#00000000 ~ #FFFFFFFF)
+--- This is a class for the specification of colors in Direct2D.
+--- @class D2DColor
+--- @field red number 0.0 ~ 1.0
+--- @field green number 0.0 ~ 1.0
+--- @field blue number 0.0 ~ 1.0
+--- @field alpha number 0.0 ~ 1.0
+local D2DColor = {
+    red = 0.0,
+    green = 0.0,
+    blue = 0.0,
+    alpha = 1.0,
+}
+
+--- This function converts a hex triplet string to a RGBA table.
+--- @param color_code? string hex triplet `#000000` ~ `#FFFFFF`
 --- @return table<string, number> color_with_decimal
 local function convert_hex_triplet_to_decimal(color_code)
     if color_code == nil then
-        return {}
+        return {
+            red = D2DColor.red,
+            green = D2DColor.green,
+            blue = D2DColor.blue,
+        }
     end
 
     --- @type table<string, number>
@@ -45,21 +67,8 @@ local function convert_hex_triplet_to_decimal(color_code)
     return color
 end
 
---- A class for easily specifying D2D color.
---- @class D2DColor
---- @field red number 0.0 ~ 1.0
---- @field green number 0.0 ~ 1.0
---- @field blue number 0.0 ~ 1.0
---- @field alpha number 0.0 ~ 1.0
-local D2DColor = {
-    red = 0.0,
-    green = 0.0,
-    blue = 0.0,
-    alpha = 1.0,
-}
-
---- Generates the color class and returns it.
---- @param color_code? string hex triplet (#00000000 ~ #FFFFFFFF)
+--- This function generates the color class and returns it.
+--- @param color_code? string hex triplet `#000000` ~ `#FFFFFF`
 --- @param red? number 0 ~ 255
 --- @param green? number 0 ~ 255
 --- @param blue? number 0 ~ 255
@@ -77,6 +86,7 @@ function d2dcolor.new(color_code, red, green, blue, alpha)
     return self
 end
 
+--- This function returns a boolean whether the specified color is pure black.
 --- @param color D2DColor
 --- @return boolean
 function d2dcolor.is_black(color)

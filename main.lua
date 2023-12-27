@@ -31,19 +31,45 @@ local DIR_PATH = SCRIPT_PATH:match("(.*\\)")
 
 add_lua_path(DIR_PATH)
 
+local colorset = require("graphic.theme.colorset")
+local display = require("graphic.display")
+local tab = require("graphic.tab")
+local element = require("graphic.elements.element")
+local mutable_text = require("graphic.elements.mutable_text")
+
+
 print("Parfait (https://github.com/7rs/parfait)")
 print(string.format("Lua Version: %s", _VERSION))
 print(string.format("Mupen Version: %s", get_mupen_version()))
 print()
 
-local colorset = require("graphic.theme.colorset")
-local display = require("graphic.display")
-local tab = require("graphic.tab")
+-- wgui
+-- input
+-- savestate
+-- avi
+-- iohelper
+-- movie
+-- joypad
+-- memory
+-- emu
 
-local display_info = display.resize_window()
-Main = tab.new(colorset.DRACULA, display_info.width, 0, display_info.expand, display_info.height)
+for k, v in pairs(wgui) do
+    print(k)
+end
 
-emu.atupdatescreen(function()
-    Main:draw()
-end)
+local function setTab()
+    local display_info = display.resize_window()
+    Main = tab.new(colorset.DRACULA, display_info.width, 0, display_info.expand, display_info.height)
+    Main:add_element(element.new(
+        element.ELEMENT_TYPES.TEXT,
+        mutable_text.new(colorset.DRACULA.WHITE, Main.left, 30, 100, 50, nil, nil, nil, function()
+            return "" .. memory.readdword(0x00B3B17C)
+        end)
+    ))
+
+    return Main
+end
+
+Main = setTab()
+emu.atupdatescreen(function() Main:draw() end)
 emu.atstop(function() display.resize_window(true) end)
